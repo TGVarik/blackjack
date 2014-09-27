@@ -7,6 +7,11 @@ class window.Hand extends Backbone.Collection
   hit: ->
     @add @deck.pop()
     scores = @scores()
+    @checkScore()
+    @last()
+
+  checkScore: ->
+    scores = @scores()
     lowest = 22
     for key of scores
       if scores[key] is 21
@@ -16,10 +21,18 @@ class window.Hand extends Backbone.Collection
         lowest = scores[key]
     if lowest > 21
       @trigger "bust"
-    @last()
+    return
 
   stand: ->
     @trigger "stand"
+    return
+
+  deal: ->
+    if @isDealer
+      @reset [ @deck.pop().flip() , @deck.pop() ]
+    else
+      @reset [ @deck.pop() , @deck.pop() ]
+    return
 
   scores: ->
     # The scores are an array of potential scores.

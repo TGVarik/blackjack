@@ -3,19 +3,41 @@ class window.App extends Backbone.Model
 
   initialize: ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', playerHand = deck.dealPlayer()
-    @set 'dealerHand', dealerHand = deck.dealDealer()
+    @set 'playerHand', playerHand = deck.makePlayer()
+    @set 'dealerHand', deck.makeDealer()
     playerHand
-    .on 'bust', ->
-      alert 'You Bust! :('
-    .on 'win', ->
-      alert 'You Won!'
-    .on 'stand', ->
-      @.get 'playerHand'
-        .off 'stand'
+    .on 'win bust stand', =>
+      @trigger 'lock'
+    .on 'bust', =>
+      @endGame 'lose'
+    .on 'win', =>
+      @endGame 'win'
+    .on 'stand', =>
       @playDealer()
-    , this
+    @playGame()
     return @
+
+  playGame: ->
+    deck = @get 'deck'
+    playerHand = @get 'playerHand'
+    playerHand.deal()
+    @get 'dealerHand'
+      .deal()
+    playerHand.checkScore()
+    return @
+
+  endGame: (outcome) ->
+    dealerHand = @get 'dealerHand'
+    if not dealerHand.first().get 'revealed'
+      dealerHand.first().flip()
+    if outcome is 'win'
+      alert 'You win!'
+    if outcome is 'lose'
+      alert 'You lose!'
+    if outcome is 'push'
+      alert 'You pushed!'
+    @trigger 'endgame'
+    return
 
   playDealer: ->
     # turn over that hidden card
@@ -24,7 +46,7 @@ class window.App extends Backbone.Model
     loop
       dealerScore = Math.max.apply null, dealerHand.scores()
       if dealerScore > 21
-        alert 'You Win!!!'
+        @endGame 'win'
         break
       playerScore = @get 'playerHand'
         .scores();
@@ -37,11 +59,11 @@ class window.App extends Backbone.Model
         playerScore = playerScore[0]
       if dealerScore > 16
         if dealerScore > playerScore
-          alert 'You Lose! :('
+          @endGame 'lose'
         else if dealerScore < playerScore
-          alert 'You Win!!!'
+          @endGame 'win'
         else
-          alert 'You Pushed :/'
+          @endGame 'push'
         break
       else
         dealerHand.hit()
