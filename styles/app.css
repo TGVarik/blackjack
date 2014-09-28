@@ -1,18 +1,63 @@
+.hand{
+    perspective: 800px;
+    position: relative;
+    overflow: auto;
+}
+
 .card {
-  float: left;
-  border: solid 1px black;
-  width: 120px;
-  border-radius: 5px;
-  height: 167px;
-  margin-right: 20px;
+    float: left;
+    border: none;
+    transform-style: preserve-3d;
+    transform-origin: right center;
+    transition: transform 0.75s;
+}
+
+.card-svg {
+    background-color: transparent;
+    font-family: 'Deuce', sans-serif;
+    text-align: center;
+    background-image: linear-gradient(67.4deg, #fffdf0, #ffdba9);
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.card-svg.front {
+
+}
+
+.card-svg.back {
+    transform: rotateY(180deg);
 }
 
 .covered {
-  background-color: black;
+    transform: translateX(-100%) rotateY(180deg);
+}
+
+svg text {
+    text-anchor: middle;
+}
+.red .rank {
+    fill: #b30000;
+}
+
+.red .suit {
+    stroke: #b30000;
+}
+
+.suit {
+    stroke-width: 1px;
+    fill: transparent;
+}
+
+.black .rank {
+    fill: black;
+}
+.black .suit {
+    stroke: black;
 }
 
 .hand {
-  overflow: auto;
+
 }
 
 body {
