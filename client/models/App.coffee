@@ -30,12 +30,12 @@ class window.App extends Backbone.Model
     dealerHand = @get 'dealerHand'
     if not dealerHand.first().get 'revealed'
       dealerHand.first().flip()
-#    if outcome is 'win'
-#      alert 'You win!'
-#    if outcome is 'lose'
-#      alert 'You lose!'
-#    if outcome is 'push'
-#      alert 'You pushed!'
+    if outcome is 'win'
+      alert 'You win!'
+    if outcome is 'lose'
+      alert 'You lose!'
+    if outcome is 'push'
+      alert 'You pushed!'
     @trigger 'endgame'
     return
 

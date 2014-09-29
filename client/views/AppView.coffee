@@ -1,9 +1,13 @@
 class window.AppView extends Backbone.View
 
   template: _.template '
-    <button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="play-button" style="display: none">Play again</button>
-    <div class="player-hand-container"></div>
-    <div class="dealer-hand-container"></div>
+ <div class="dealer-hand-container hand-container"></div>
+ <div class="player-hand-container hand-container"></div>
+ <div class="controls">
+   <button class="hit-button">Hit</button>
+   <button class="stand-button">Stand</button>
+   <button class="play-button" style="display: none">Play again</button>
+  </div>
   '
 
   events:
